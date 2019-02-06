@@ -1,0 +1,35 @@
+{
+    "name": "we-nebula/ecommproject",
+    "type": "project",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Gowrav Vishwakarma",
+            "email": "gowravvishwakarma@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "repositories": [
+        {
+            "type": "path",
+            "url": "./development/we-nebula/ecomm",
+            "options": {
+                "symlink": true
+            }
+        }
+    ],
+    "require": {
+        "atk4/ui": "dev-develop as 1.6.1",
+        "atk4/login": "dev-develop",
+        "we-nebula/ecomm": "dev-master"
+    },
+    "require-dev": {
+        "atk4/schema": "^1.1.1",
+        "phpunit/phpunit": "<6",
+        "phpunit/phpcov": "^3.0",
+        "codeclimate/php-test-reporter": "*",
+        "behat/behat": "^3.4",
+        "behat/mink-extension": "^2.2",
+        "fzaninotto/faker": "*"
+    }
+}

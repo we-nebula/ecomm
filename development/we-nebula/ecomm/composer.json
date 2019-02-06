@@ -1,0 +1,16 @@
+{
+    "name": "we-nebula/ecomm",
+    "type": "project",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Gowrav Vishwakarma",
+            "email": "gowrav.v@nebulacompanies.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {},
+    "autoload":{
+        "psr-4":{"nebula\\we\\" : "src/"}
+    }
+}
