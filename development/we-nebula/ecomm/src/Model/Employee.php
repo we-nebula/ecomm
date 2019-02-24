@@ -22,12 +22,18 @@ class Employee extends \nebula\we\Model {
         $this->hasOne('role_id',new \nebula\we\Model\Role)
         ->withTitle();
 
+        $this->hasOne('created_by_id',new \nebula\we\Model\Employee)
+        ->withTitle();
+
         $this->addFields([
         	['name'],
         	['username'],
         	['password'],
             ['joined_on','type'=>'date'],
+            ['status','enum'=>array_keys($this->actions)],
         ]);
+
+        $this->addField('image',new \atk4\filestore\Field\File($this->app->filesystem));
 
         (new \atk4\schema\Migration\MySQL($this))->migrate();
 

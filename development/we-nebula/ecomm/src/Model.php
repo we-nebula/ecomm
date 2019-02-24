@@ -18,13 +18,13 @@ class Model extends \atk4\data\Model {
 	function init(){
 		parent::init();
 
-		if($this->created_by_field){
-			$this->hasOne($this->created_by_field,new \nebula\we\Model\Staff())->addTitle();
-		}
+		// if($this->created_by_field){
+		// 	$this->hasOne($this->created_by_field,new \nebula\we\Model\Staff())->addTitle();
+		// }
 
-		if($this->assigned_by_field){
-			$this->hasOne($this->assigned_by_field,new \nebula\we\Model\Staff())->addTitle();
-		}
+		// if($this->assigned_by_field){
+		// 	$this->hasOne($this->assigned_by_field,new \nebula\we\Model\Staff())->addTitle();
+		// }
 
 	}
 

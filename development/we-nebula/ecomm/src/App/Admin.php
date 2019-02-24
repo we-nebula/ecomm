@@ -4,6 +4,9 @@
 namespace nebula\we\App;
 
 
+use League\Flysystem\Filesystem;
+use League\Flysystem\Adapter\Local;
+
 class Admin extends \nebula\we\App {
 
 	public $title = "WE :: Commission Engine (2)";
@@ -11,13 +14,16 @@ class Admin extends \nebula\we\App {
 	function init(){
 		parent::init();
 
+		$adapter = new Local(getcwd().'/localfiles');
+		$this->filesystem = new Filesystem($adapter);
+
 		$this->dbConnect($this->getConfig('dns'), $this->getConfig('db_user'), $this->getConfig('db_password'));
 
 		$this->auth = $this->add(new \atk4\login\Auth());
 	    $this->auth->setModel(new \nebula\we\Model\Employee($this->db),'username','password');
 	    $this->auth->model = $this->auth->user;
 
-		$this->createMenus();		
+		$this->createMenus();
 		$this->router();
 
 	}

@@ -21,7 +21,8 @@
     "require": {
         "atk4/ui": "dev-develop as 1.6.1",
         "atk4/login": "dev-develop",
-        "we-nebula/ecomm": "dev-master"
+        "we-nebula/ecomm": "dev-master",
+        "atk4/filestore": "dev-master"
     },
     "require-dev": {
         "atk4/schema": "^1.1.1",

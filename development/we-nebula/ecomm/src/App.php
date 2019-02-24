@@ -11,7 +11,8 @@ class App extends \atk4\ui\App {
     use \nebula\we\Traits\DomainManager;
     use \nebula\we\Traits\DateAndTime;
 	use \nebula\we\Traits\PageRouter;
-	use \nebula\we\Traits\ConfigFile;
+    // use \nebula\we\Traits\ConfigFile;
+	use \atk4\core\AppConfigTrait;
 
     function init(){
         parent::init();
