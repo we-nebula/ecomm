@@ -37,4 +37,8 @@ class Admin extends \nebula\we\App {
 		$menu = $this->app->layout->menu->addMenu('Reporting');
 	}
 
+	function addURLArgs($arg,$value){
+		$this->sticky_get_arguments[$arg] = $value;
+	}
+
 }

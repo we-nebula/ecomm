@@ -238,7 +238,7 @@ class ActionDecorator extends \atk4\ui\TableColumn\Generic {
 						is_array($permission) && in_array($this->auth->model->id, $permission)
 					)
 				){
-						$this->status_actions[$status][] = $value;
+						$this->status_actions[$status][$value] = $this->acl_controller->model->hasMethod('page_'.$value)?'page':'method';
 					}
 			}
 		}
@@ -250,28 +250,12 @@ class ActionDecorator extends \atk4\ui\TableColumn\Generic {
 		$this->table=$this->acl_controller->view;
 
 
-		$this->vp = $this->table->_add(new \atk4\ui\CallbackLater());
-        $this->vp->set(function ()use($thisname) {
-        	// STEP 2: Called when clicked by dropdown acl-action
+		$this->method_callback = $this->table->_add(new \atk4\ui\CallbackLater());
+        $this->method_callback->set(function ()use($thisname) {
         	$model_id = $_REQUEST[$thisname];
         	$action = $_REQUEST[$thisname.'_act'];
 
-        	if($this->acl_controller->model->hasMethod('page_'.$action)){
-        		// STEP 4: NEED HELP HERE (STEP 3 IS BELOW) 
-        		// If model has function "page_{acl-action}" it is set to be called in frameURL/jsModal by passing $vp2
-
-				$this->vp2 = $this->owner->app->add('Modal');
-				$this->vp2->set(function($p){
-					$this->acl_controller->model->{'page_'.$action}($p);
-				});
-
-        		// And this is Showing Javascript not executing it 
-        		// HENCE DIRECTIONS NEEDED HERE
-        		$modal = new \atk4\ui\jsModal('TITLE HERE',$this->vp2,[$thisname=>$model_id,$thisname.'_act'=>$action]);
-	            $this->table->app->terminate($modal->jsRender());
-
-        	}elseif($this->acl_controller->model->hasMethod($action)){
-        		// STEP 3: If model has function named of acl-action sent it is called
+        	if($this->acl_controller->model->hasMethod($action)){
         		$this->acl_controller->model->load($model_id);
         		$this->acl_controller->model->{$action}();
         	}else{
@@ -283,9 +267,35 @@ class ActionDecorator extends \atk4\ui\TableColumn\Generic {
             $this->table->app->terminate($reload->renderJSON());
         });
 
-        // STEP 1: attach event on .acl-action and send row-id and action-clicked to $this->vp
-		$this->table->on('click', '.acl-action')->atkAjaxec([
-            'uri'         => $this->vp->getJSURL(),
+        $this->page_callback = $this->acl_controller->view->add('VirtualPage');
+        $this->page_callback->set(function($page)use($thisname){
+        	
+        	$model_id = $_REQUEST[$thisname]; // <=====  2. Is not available when ...
+        	$action = $_REQUEST[$thisname.'_act'];
+
+        	$this->acl_controller->app->addURLArgs($thisname, $model_id);
+        	$this->acl_controller->app->addURLArgs($thisname.'_act', $action);
+
+
+
+        	if($this->acl_controller->model->hasMethod('page_'.$action)){
+	        	$this->acl_controller->model->load($model_id);
+	        	// <======= 3. this page submits a form, due to it was sent as POST in step 1
+	        	$this->acl_controller->model->{'page_'.$action}($page);
+	        }else{
+        		throw new \atk4\ui\Exception(['Method not deifined','class'=>get_class($this->acl_controller->model), 'method'=>$action ]);
+	        }
+        });
+
+		$this->table->on('click', '.acl-action.method')->atkAjaxec([
+            'uri'         => $this->method_callback->getJSURL(),
+            'uri_options' => [$thisname => (new \atk4\ui\jQuery(new \atk4\ui\jsExpression('this')))->data('id'), $thisname.'_act'=>(new \atk4\ui\jQuery(new \atk4\ui\jsExpression('this')))->data('action')],
+        ]);
+
+		// < =========  1. COMES FROM HERE
+        $this->table->on('click', '.acl-action.page')->atkAjaxec([
+            'uri'         => $this->page_callback->getJSURL('cut'),
+            'method'	  => 'GET',
             'uri_options' => [$thisname => (new \atk4\ui\jQuery(new \atk4\ui\jsExpression('this')))->data('id'), $thisname.'_act'=>(new \atk4\ui\jQuery(new \atk4\ui\jsExpression('this')))->data('action')],
         ]);
 	}
@@ -298,9 +308,9 @@ class ActionDecorator extends \atk4\ui\TableColumn\Generic {
     							<div class="ui simple dropdown item">'.$field->get().'<i class="dropdown icon"></i>
     								<div class="menu">';
 		
-		foreach ($status_actions as $act) {
+		foreach ($status_actions as $act => $type) {
 			$act_title = ucwords(str_replace('_', ' ', $act));
-			$dropdown_string .= 		'<div class="item acl-action" data-id="'.$row['id'].'" data-action="'.$act.'">'.$act_title.'</div>';
+			$dropdown_string .= 		'<div class="item acl-action '. $type .'" data-id="'.$row['id'].'" data-action="'.$act.'">'.$act_title.'</div>';
 		}
 
 		$dropdown_string .='		</div>
