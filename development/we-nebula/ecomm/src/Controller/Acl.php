@@ -247,33 +247,43 @@ class ActionDecorator extends \atk4\ui\TableColumn\Generic {
 	public function init(){
 		parent::init();
 		$thisname = $this->name;
-		$this->table=$this->owner;
+		$this->table=$this->acl_controller->view;
+
+
 		$this->vp = $this->table->_add(new \atk4\ui\CallbackLater());
         $this->vp->set(function ()use($thisname) {
-        	
-        	$model_id = $_POST[$thisname];
-        	$action = $_POST[$thisname.'_act'];
+        	// STEP 2: Called when clicked by dropdown acl-action
+        	$model_id = $_REQUEST[$thisname];
+        	$action = $_REQUEST[$thisname.'_act'];
 
         	if($this->acl_controller->model->hasMethod('page_'.$action)){
-        		$vp2 = $this->owner->app->add('Modal');
-        		$vp2->set(function($p){
-        			$this->acl_controller->model->{'page_'.$action}($p);
-        		});
+        		// STEP 4: NEED HELP HERE (STEP 3 IS BELOW) 
+        		// If model has function "page_{acl-action}" it is set to be called in frameURL/jsModal by passing $vp2
+
+				$this->vp2 = $this->owner->app->add('Modal');
+				$this->vp2->set(function($p){
+					$this->acl_controller->model->{'page_'.$action}($p);
+				});
+
+        		// And this is Showing Javascript not executing it 
+        		// HENCE DIRECTIONS NEEDED HERE
+        		$modal = new \atk4\ui\jsModal('TITLE HERE',$this->vp2,[$thisname=>$model_id,$thisname.'_act'=>$action]);
+	            $this->table->app->terminate($modal->jsRender());
+
         	}elseif($this->acl_controller->model->hasMethod($action)){
+        		// STEP 3: If model has function named of acl-action sent it is called
         		$this->acl_controller->model->load($model_id);
         		$this->acl_controller->model->{$action}();
         	}else{
         		throw new \atk4\ui\Exception(['Method not deifined','class'=>get_class($this->acl_controller->model), 'method'=>$action ]);
         	}
 
-        	// throw new \Exception("Error Processing Request ". $model_id. " ". $action. ' in '. $this->acl_controller->acl_model->table, 1);
-            // $this->table->model->load($_POST[$this->name])->delete();
-
             $reload = $this->table->reload ?: $this->table;
 
             $this->table->app->terminate($reload->renderJSON());
         });
 
+        // STEP 1: attach event on .acl-action and send row-id and action-clicked to $this->vp
 		$this->table->on('click', '.acl-action')->atkAjaxec([
             'uri'         => $this->vp->getJSURL(),
             'uri_options' => [$thisname => (new \atk4\ui\jQuery(new \atk4\ui\jsExpression('this')))->data('id'), $thisname.'_act'=>(new \atk4\ui\jQuery(new \atk4\ui\jsExpression('this')))->data('action')],
