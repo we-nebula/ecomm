@@ -13,6 +13,7 @@ class Acl extends \nebula\we\Controller {
 	public $auth_model_role_field='role_id'; // Can be post_id or anything if Acl is applied in Department->Post->Employee System
 
 	public $action_allowed=null; // Final Array determines action allowed
+	public $status_actions=[]; // Final Array determines action allowed on each status
 	public $permissive_acl = false;
 
 
@@ -46,6 +47,7 @@ class Acl extends \nebula\we\Controller {
 		}
 
 		$this->canDo();
+		$this->set_status_actions();
 
 		// Apply Condition on Model
 		$this->applyConditionOnModel();
@@ -85,7 +87,7 @@ class Acl extends \nebula\we\Controller {
 			$q= $this->model->dsql();
 			
 			$filler_values=['status'=>$this->model->getElement('status')];
-			foreach ($this->action_allowed_raw as $status => $actions) {
+			foreach ($this->action_allowed as $status => $actions) {
 				$filler_values[strtolower($status)]=$this->model->getElement($this->getConditionalField($status,'view'));
 			}
 
@@ -100,8 +102,8 @@ class Acl extends \nebula\we\Controller {
 
 	protected function addActionsInView(){
 		if(!($this->view instanceof \atk4\ui\Table) && !($this->view instanceof \atk4\ui\Grid)) return;
-
-		$this->view->addDecorator('status',new ActionDecorator);
+		$this->view->addDecorator('status',$this->view->add(new ActionDecorator($this->status_actions, $this)));
+		$this->view->canCreate = false;
 	}
 
 	protected function manageAclPage($p){
@@ -175,6 +177,22 @@ class Acl extends \nebula\we\Controller {
 		}
 	}
 
+	protected function set_status_actions(){
+		foreach ($this->action_allowed as $status => $values) {
+			$this->status_actions[$status]=[];
+			foreach ($values as $value => $permission) {
+				if(
+					$permission === true || 
+					(
+						is_array($permission) && in_array($this->auth->model->id, $permission)
+					)
+				){
+						$this->status_actions[$status][$value] = $this->model->hasMethod('page_'.$value)?'page':'method';
+					}
+			}
+		}
+	}
+
 	protected function canView(){
 		$view_array=[];
 
@@ -219,10 +237,112 @@ class Acl extends \nebula\we\Controller {
  */
 
 class ActionDecorator extends \atk4\ui\TableColumn\Generic {
-	public function getDataCellTemplate(\atk4\data\Field $f = null)
+	private $acl_controller=null;
+
+	// ['Active'=>['de_activate','send_email'],'InActive'=>['activate','raise_issue']];
+	private $status_actions=[];
+	
+	public function __construct($status_actions, $acl_controller){
+		$this->acl_controller = $acl_controller;
+		$this->status_actions = $status_actions;
+	}
+
+	public function init(){
+		parent::init();
+		$thisname = $this->name;
+		$this->table=$this->acl_controller->view;
+
+
+		$this->method_callback = $this->table->_add(new \atk4\ui\CallbackLater());
+        $this->method_callback->set(function ()use($thisname) {
+        	$model_id = $_REQUEST[$thisname];
+        	$action = $_REQUEST[$thisname.'_act'];
+
+        	if($this->acl_controller->model->hasMethod($action)){
+        		$this->acl_controller->model->load($model_id);
+        		$this->acl_controller->model->{$action}();
+        	}else{
+        		throw new \atk4\ui\Exception(['Method not deifined','class'=>get_class($this->acl_controller->model), 'method'=>$action ]);
+        	}
+
+            $reload = $this->table->reload ?: $this->table;
+
+            $this->table->app->terminate($reload->renderJSON());
+        });
+
+        $this->page_callback = $this->acl_controller->view->add('VirtualPage');
+        $this->page_callback->set(function($page)use($thisname){
+        	
+        	$model_id = $_REQUEST[$thisname];
+        	$action = $_REQUEST[$thisname.'_act'];
+
+        	$this->acl_controller->app->addURLArgs($thisname, $model_id);
+        	$this->acl_controller->app->addURLArgs($thisname.'_act', $action);
+
+
+
+        	if($this->acl_controller->model->hasMethod('page_'.$action)){
+	        	$this->acl_controller->model->load($model_id);
+	        	$page_return = $this->acl_controller->model->{'page_'.$action}($page);
+	        	// TODO manage Page Return automatically
+	        }else{
+        		throw new \atk4\ui\Exception(['Method not deifined','class'=>get_class($this->acl_controller->model), 'method'=>$action ]);
+	        }
+        });
+
+		$this->table->on('click', '.acl-action.method')->atkAjaxec([
+            'uri'         => $this->method_callback->getJSURL(),
+            'uri_options' => [$thisname => (new \atk4\ui\jQuery(new \atk4\ui\jsExpression('this')))->data('id'), $thisname.'_act'=>(new \atk4\ui\jQuery(new \atk4\ui\jsExpression('this')))->data('action')],
+        ]);
+
+		// < =========  1. COMES FROM HERE
+        $this->table->on('click', '.acl-action.page')->atkAjaxec([
+            'uri'         => $this->page_callback->getJSURL('cut'),
+            'method'	  => 'GET',
+            'uri_options' => [$thisname => (new \atk4\ui\jQuery(new \atk4\ui\jsExpression('this')))->data('id'), $thisname.'_act'=>(new \atk4\ui\jQuery(new \atk4\ui\jsExpression('this')))->data('action')],
+        ]);
+	}
+
+	public function getHtmlTags	($row, $field)
     {
-    	$output = new \atk4\ui\DropDown(['id'=>'a'.uniqid()]);
-    	$output->setSource(['AS','CDF']);
-        return $output->render();
+    	$status_actions = $this->status_actions[$field->get()];
+
+    	$dropdown_string =	'<div class="ui compact menu">
+    							<div class="ui simple dropdown item">'.$field->get().'<i class="dropdown icon"></i>
+    								<div class="menu">';
+		
+		foreach ($status_actions as $act => $type) {
+			if(in_array($act, ['view','edit','delete'])) continue;
+
+			$act_title = ucwords(str_replace('_', ' ', $act));
+			$dropdown_string .= 		'<div class="item acl-action '. $type .'" data-id="'.$row['id'].'" data-action="'.$act.'">'.$act_title.'</div>';
+		}
+
+		$dropdown_string .='		</div>
+								</div>
+							</div>';
+        
+        return [$field->short_name => $dropdown_string];
+    }
+}
+
+class EditDecorator extends \atk4\ui\TableColumn\Generic {
+	private $acl_controller=null;
+
+	// ['Active'=>['de_activate','send_email'],'InActive'=>['activate','raise_issue']];
+	private $status_actions=[];
+	
+	public function __construct($status_actions, $acl_controller){
+		$this->acl_controller = $acl_controller;
+		$this->status_actions = $status_actions;
+	}
+
+	public function getHtmlTags	($row, $field)
+    {
+    	$status_actions = $this->status_actions[$field->get()];
+
+    	return;
+        
+        return [$field->short_name => $dropdown_string];
     }
 }

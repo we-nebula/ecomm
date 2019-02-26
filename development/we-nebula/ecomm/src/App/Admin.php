@@ -51,4 +51,8 @@ class Admin extends \nebula\we\App {
         $this->app->layout->menuLeft->addItem(['AttributeValueDescription'], ['index','page'=>'nebula\we\Page\attributesvaluesdescription']);
     }
 
+	function addURLArgs($arg,$value){
+		$this->sticky_get_arguments[$arg] = $value;
+	}
+
 }

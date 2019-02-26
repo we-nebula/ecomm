@@ -9,13 +9,9 @@ class employees extends \nebula\we\Page {
 		parent::init();
 
 		$emp = new Employee($this->app->db);
-		$crud = $this->add(['CRUD']);
+		$crud = $this->add(['\atk4\acl\CRUD']);
 		$crud->setModel($emp);
 
-
-		$crud->add(new \nebula\we\Controller\Acl);
-		// echo $emp->action('select')->render();
-		// $this->app->terminate();
 		$modal_vp1 = $this->add(['Modal', 'title' => 'Roles']);
 		$modal_vp1->set(function ($p){
 			$c = $p->add(['CRUD']);

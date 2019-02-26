@@ -12,7 +12,7 @@ class App extends \atk4\ui\App {
     use \nebula\we\Traits\DateAndTime;
 	use \nebula\we\Traits\PageRouter;
     // use \nebula\we\Traits\ConfigFile;
-	use \atk4\core\AppConfigTrait;
+	use \atk4\core\ConfigTrait;
 
     function init(){
         parent::init();
