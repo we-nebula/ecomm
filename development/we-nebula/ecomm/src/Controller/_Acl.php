@@ -13,6 +13,7 @@ class Acl extends \nebula\we\Controller {
 	public $auth_model_role_field='role_id'; // Can be post_id or anything if Acl is applied in Department->Post->Employee System
 
 	public $action_allowed=null; // Final Array determines action allowed
+	public $status_actions=[]; // Final Array determines action allowed on each status
 	public $permissive_acl = false;
 
 
@@ -46,6 +47,7 @@ class Acl extends \nebula\we\Controller {
 		}
 
 		$this->canDo();
+		$this->set_status_actions();
 
 		// Apply Condition on Model
 		$this->applyConditionOnModel();
@@ -100,7 +102,8 @@ class Acl extends \nebula\we\Controller {
 
 	protected function addActionsInView(){
 		if(!($this->view instanceof \atk4\ui\Table) && !($this->view instanceof \atk4\ui\Grid)) return;
-		$this->view->addDecorator('status',$this->view->add(new ActionDecorator($this->action_allowed, $this)));
+		$this->view->addDecorator('status',$this->view->add(new ActionDecorator($this->status_actions, $this)));
+		$this->view->canCreate = false;
 	}
 
 	protected function manageAclPage($p){
@@ -174,6 +177,22 @@ class Acl extends \nebula\we\Controller {
 		}
 	}
 
+	protected function set_status_actions(){
+		foreach ($this->action_allowed as $status => $values) {
+			$this->status_actions[$status]=[];
+			foreach ($values as $value => $permission) {
+				if(
+					$permission === true || 
+					(
+						is_array($permission) && in_array($this->auth->model->id, $permission)
+					)
+				){
+						$this->status_actions[$status][$value] = $this->model->hasMethod('page_'.$value)?'page':'method';
+					}
+			}
+		}
+	}
+
 	protected function canView(){
 		$view_array=[];
 
@@ -218,30 +237,14 @@ class Acl extends \nebula\we\Controller {
  */
 
 class ActionDecorator extends \atk4\ui\TableColumn\Generic {
-	private $action_list=[];
 	private $acl_controller=null;
 
 	// ['Active'=>['de_activate','send_email'],'InActive'=>['activate','raise_issue']];
 	private $status_actions=[];
 	
-	public function __construct($action_list, $acl_controller){
+	public function __construct($status_actions, $acl_controller){
 		$this->acl_controller = $acl_controller;
-		$this->action_list = $action_list;
-
-		foreach ($this->action_list as $status => $values) {
-			$this->status_actions[$status]=[];
-			foreach ($values as $value => $permission) {
-				if(in_array($value, ['view','edit','delete'])) continue;
-				if(
-					$permission === true || 
-					(
-						is_array($permission) && in_array($this->auth->model->id, $permission)
-					)
-				){
-						$this->status_actions[$status][$value] = $this->acl_controller->model->hasMethod('page_'.$value)?'page':'method';
-					}
-			}
-		}
+		$this->status_actions = $status_actions;
 	}
 
 	public function init(){
@@ -270,7 +273,7 @@ class ActionDecorator extends \atk4\ui\TableColumn\Generic {
         $this->page_callback = $this->acl_controller->view->add('VirtualPage');
         $this->page_callback->set(function($page)use($thisname){
         	
-        	$model_id = $_REQUEST[$thisname]; // <=====  2. Is not available when ...
+        	$model_id = $_REQUEST[$thisname];
         	$action = $_REQUEST[$thisname.'_act'];
 
         	$this->acl_controller->app->addURLArgs($thisname, $model_id);
@@ -280,8 +283,8 @@ class ActionDecorator extends \atk4\ui\TableColumn\Generic {
 
         	if($this->acl_controller->model->hasMethod('page_'.$action)){
 	        	$this->acl_controller->model->load($model_id);
-	        	// <======= 3. this page submits a form, due to it was sent as POST in step 1
-	        	$this->acl_controller->model->{'page_'.$action}($page);
+	        	$page_return = $this->acl_controller->model->{'page_'.$action}($page);
+	        	// TODO manage Page Return automatically
 	        }else{
         		throw new \atk4\ui\Exception(['Method not deifined','class'=>get_class($this->acl_controller->model), 'method'=>$action ]);
 	        }
@@ -309,6 +312,8 @@ class ActionDecorator extends \atk4\ui\TableColumn\Generic {
     								<div class="menu">';
 		
 		foreach ($status_actions as $act => $type) {
+			if(in_array($act, ['view','edit','delete'])) continue;
+
 			$act_title = ucwords(str_replace('_', ' ', $act));
 			$dropdown_string .= 		'<div class="item acl-action '. $type .'" data-id="'.$row['id'].'" data-action="'.$act.'">'.$act_title.'</div>';
 		}
@@ -316,6 +321,27 @@ class ActionDecorator extends \atk4\ui\TableColumn\Generic {
 		$dropdown_string .='		</div>
 								</div>
 							</div>';
+        
+        return [$field->short_name => $dropdown_string];
+    }
+}
+
+class EditDecorator extends \atk4\ui\TableColumn\Generic {
+	private $acl_controller=null;
+
+	// ['Active'=>['de_activate','send_email'],'InActive'=>['activate','raise_issue']];
+	private $status_actions=[];
+	
+	public function __construct($status_actions, $acl_controller){
+		$this->acl_controller = $acl_controller;
+		$this->status_actions = $status_actions;
+	}
+
+	public function getHtmlTags	($row, $field)
+    {
+    	$status_actions = $this->status_actions[$field->get()];
+
+    	return;
         
         return [$field->short_name => $dropdown_string];
     }

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ef1c7584233f9e49cf6daa3d1d591303",
+    "content-hash": "02629fee114f8203a0cb631beecd1688",
     "packages": [
         {
             "name": "atk4/core",
@@ -66,12 +66,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/atk4/data.git",
-                "reference": "2f2d3425a39dccf11078c2ca53a2a955927a63a8"
+                "reference": "7271c009f6cf48909e3a873c432a9ee3ddb55e07"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/atk4/data/zipball/2f2d3425a39dccf11078c2ca53a2a955927a63a8",
-                "reference": "2f2d3425a39dccf11078c2ca53a2a955927a63a8",
+                "url": "https://api.github.com/repos/atk4/data/zipball/7271c009f6cf48909e3a873c432a9ee3ddb55e07",
+                "reference": "7271c009f6cf48909e3a873c432a9ee3ddb55e07",
                 "shasum": ""
             },
             "require": {
@@ -117,7 +117,7 @@
                 "query",
                 "sql"
             ],
-            "time": "2019-02-23T22:01:55+00:00"
+            "time": "2019-02-25T22:29:11+00:00"
         },
         {
             "name": "atk4/dsql",
@@ -351,12 +351,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/atk4/ui.git",
-                "reference": "79337b47b03564564162b54eb01bec347288d7d5"
+                "reference": "65ba26584691c2626c0f7007d6ae20059f5d8c5a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/atk4/ui/zipball/79337b47b03564564162b54eb01bec347288d7d5",
-                "reference": "79337b47b03564564162b54eb01bec347288d7d5",
+                "url": "https://api.github.com/repos/atk4/ui/zipball/65ba26584691c2626c0f7007d6ae20059f5d8c5a",
+                "reference": "65ba26584691c2626c0f7007d6ae20059f5d8c5a",
                 "shasum": ""
             },
             "require": {
@@ -405,7 +405,35 @@
                 "web",
                 "widget"
             ],
-            "time": "2019-02-24T15:28:28+00:00"
+            "time": "2019-02-25T22:32:29+00:00"
+        },
+        {
+            "name": "gowrav-vishwakarma/atk4acl",
+            "version": "dev-master",
+            "dist": {
+                "type": "path",
+                "url": "./development/gowrav-vishwakarma/atk4acl",
+                "reference": "950b788acb39fc9b2b63d62fb0c66554cb1cab35",
+                "shasum": null
+            },
+            "type": "project",
+            "autoload": {
+                "psr-4": {
+                    "atk4\\acl\\": "src/"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Gowrav Vishwakarma",
+                    "email": "gowravvishwakarma@gmail.com"
+                }
+            ],
+            "transport-options": {
+                "symlink": true
+            }
         },
         {
             "name": "league/flysystem",
@@ -3641,8 +3669,8 @@
     ],
     "aliases": [
         {
-            "alias": "1.6.1",
-            "alias_normalized": "1.6.1.0",
+            "alias": "1.6.0",
+            "alias_normalized": "1.6.0.0",
             "version": "dev-develop",
             "package": "atk4/ui"
         }

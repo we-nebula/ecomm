@@ -16,12 +16,20 @@
             "options": {
                 "symlink": true
             }
+        },
+        {
+            "type": "path",
+            "url": "./development/gowrav-vishwakarma/atk4acl",
+            "options": {
+                "symlink": true
+            }
         }
     ],
     "require": {
-        "atk4/ui": "dev-develop as 1.6.1",
+        "atk4/ui": "dev-develop as 1.6.0",
         "atk4/login": "dev-develop",
         "we-nebula/ecomm": "dev-master",
+        "gowrav-vishwakarma/atk4acl": "*",
         "atk4/filestore": "dev-master"
     },
     "require-dev": {
