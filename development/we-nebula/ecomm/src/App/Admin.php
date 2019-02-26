@@ -24,6 +24,7 @@ class Admin extends \nebula\we\App {
 	    $this->auth->model = $this->auth->user;
 
 		$this->createMenus();
+		$this->sidecreateMenus();
 		$this->router();
 
 	}
@@ -36,5 +37,18 @@ class Admin extends \nebula\we\App {
 		$menu = $this->app->layout->menu->addMenu('Commission System');
 		$menu = $this->app->layout->menu->addMenu('Reporting');
 	}
+	function sidecreateMenus()
+    {	
+        $this->app->layout->menuLeft->addItem(['Language'], ['index','page'=>'nebula\we\Page\languages']);
+        $this->app->layout->menuLeft->addItem(['Category'], ['index','page'=>'nebula\we\Page\categories']);
+        $this->app->layout->menuLeft->addItem(['CategoryDetail'], ['index','page'=>'nebula\we\Page\categoriesdetail']);
+        $this->app->layout->menuLeft->addItem(['Product'], ['index','page'=>'nebula\we\Page\products']);
+        $this->app->layout->menuLeft->addItem(['ProductDetail'], ['index','page'=>'nebula\we\Page\productdetails']);
+        $this->app->layout->menuLeft->addItem(['ProductCategory'], ['index','page'=>'nebula\we\Page\productcategories']);
+        $this->app->layout->menuLeft->addItem(['Attribute'], ['index','page'=>'nebula\we\Page\attributes']);
+        $this->app->layout->menuLeft->addItem(['AttributeDescription'], ['index','page'=>'nebula\we\Page\attributesdescription']);
+        $this->app->layout->menuLeft->addItem(['AttributeValue'], ['index','page'=>'nebula\we\Page\attributesvalues']);
+        $this->app->layout->menuLeft->addItem(['AttributeValueDescription'], ['index','page'=>'nebula\we\Page\attributesvaluesdescription']);
+    }
 
 }
