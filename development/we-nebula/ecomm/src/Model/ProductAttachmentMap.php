@@ -4,10 +4,10 @@
 namespace nebula\we\Model;
 
 
-class ProductVariationAttributeValueMap extends \nebula\we\Model {
+class ProductAttachmentMap extends \nebula\we\Model {
 	
-	public $table='product_variantion_attribute_value_map';
-	public $caption ="Product Variation Attribute Value Map";
+	public $table='product_attachment_map';
+	public $caption ="Product Attachment Map";
 
     public $acl_type='ProductDetail';
 
@@ -19,8 +19,8 @@ class ProductVariationAttributeValueMap extends \nebula\we\Model {
 	public function init(){
         parent::init();
 
-        $this->hasOne('product_variation_id',new \nebula\we\Model\ProductVariation)->withTitle();
-        $this->hasOne('attribute_value_id',new \nebula\we\Model\AttributeValue)->withTitle();
+        $this->hasOne('product_id',new \nebula\we\Model\Product)->withTitle();
+        $this->hasOne('media_id',new \nebula\we\Model\Media)->withTitle();
         
         $this->addFields([
             ['status','enum'=>array_keys($this->actions)],
