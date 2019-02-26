@@ -31,6 +31,8 @@ class Category extends \nebula\we\Model {
 
         $this->hasMany('CategoryDetail',new \nebula\we\Model\CategoryDetail);
         $this->hasMany('ProductCategory',new \nebula\we\Model\ProductCategory);
+        $this->hasMany('attribute_id',new \nebula\we\Model\Attribute);
+
         
         (new \nebula\we\Migration\MySQL($this))->migrate();
 

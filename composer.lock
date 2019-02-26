@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "02629fee114f8203a0cb631beecd1688",
+    "content-hash": "5f728dc4027716cc8a4497188fefd369",
     "packages": [
         {
             "name": "atk4/core",
@@ -410,11 +410,16 @@
         {
             "name": "gowrav-vishwakarma/atk4acl",
             "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/gowrav-vishwakarma/atk4acl.git",
+                "reference": "69e177e3f079a2dada545355ff93a8ed2bb862c9"
+            },
             "dist": {
-                "type": "path",
-                "url": "./development/gowrav-vishwakarma/atk4acl",
-                "reference": "950b788acb39fc9b2b63d62fb0c66554cb1cab35",
-                "shasum": null
+                "type": "zip",
+                "url": "https://api.github.com/repos/gowrav-vishwakarma/atk4acl/zipball/69e177e3f079a2dada545355ff93a8ed2bb862c9",
+                "reference": "69e177e3f079a2dada545355ff93a8ed2bb862c9",
+                "shasum": ""
             },
             "type": "project",
             "autoload": {
@@ -422,6 +427,7 @@
                     "atk4\\acl\\": "src/"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -431,9 +437,7 @@
                     "email": "gowravvishwakarma@gmail.com"
                 }
             ],
-            "transport-options": {
-                "symlink": true
-            }
+            "time": "2019-02-26T07:04:22+00:00"
         },
         {
             "name": "league/flysystem",
@@ -3680,6 +3684,7 @@
         "atk4/ui": 20,
         "atk4/login": 20,
         "we-nebula/ecomm": 20,
+        "gowrav-vishwakarma/atk4acl": 20,
         "atk4/filestore": 20
     },
     "prefer-stable": false,

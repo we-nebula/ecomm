@@ -29,7 +29,7 @@
         "atk4/ui": "dev-develop as 1.6.0",
         "atk4/login": "dev-develop",
         "we-nebula/ecomm": "dev-master",
-        "gowrav-vishwakarma/atk4acl": "*",
+        "gowrav-vishwakarma/atk4acl": "dev-master",
         "atk4/filestore": "dev-master"
     },
     "require-dev": {

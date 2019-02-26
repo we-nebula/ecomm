@@ -20,6 +20,7 @@ class Attribute extends \nebula\we\Model {
         parent::init();
 
         $this->hasMany('AttributeDescription',new \nebula\we\Model\AttributeDescription);
+        $this->hasMany('CategoryAttributeMap',new \nebula\we\Model\CategoryAttributeMap);
 
         $this->addFields([
             ['name'],

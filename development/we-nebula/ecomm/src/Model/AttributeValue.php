@@ -20,6 +20,7 @@ class AttributeValue extends \nebula\we\Model {
         parent::init();
 
         $this->hasMany('AttributeValueDescription',new \nebula\we\Model\AttributeValueDescription);
+        $this->hasMany('ProductAttributeMap',new \nebula\we\Model\ProductAttributeMap);
 
         $this->addFields([
             ['name'],
