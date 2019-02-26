@@ -12,14 +12,14 @@ class Employee extends \nebula\we\Model {
     public $acl_type='Employee';
 
     public $actions = [
-        'Active'=>['view','edit','delete','deactivate'],
+        'Active'=>['view','edit','delete','deactivate','superpass'],
         'InActive'=>['view','edit','delete','activate'],
     ];
 
 	public function init(){
         parent::init();
 
-        $this->hasOne('role_id',new \nebula\we\Model\Role)
+        $this->hasOne('role_id',new \atk4\acl\Model\Role)
         ->withTitle();
 
         $this->hasOne('created_by_id',new \nebula\we\Model\Employee)
@@ -41,5 +41,37 @@ class Employee extends \nebula\we\Model {
 
     function isSuperUser(){
         return $this['role']=='SuperUser';
+    }
+
+    function activate(){
+        $this['status']='Active';
+        $this->save();
+    }
+
+    function deactivate(){
+        $this['status']='InActive';
+        $this->save();
+    }
+
+    function page_superpass($p){
+        $p->add(['Message'])->set("HELLO");
+        $form = $p->add('Form');
+        $form->addField('name');
+        $form->buttonSave->set('Subscribe');
+        $form->buttonSave->icon = 'mail';
+
+
+        $form->onSubmit(function($f)use($p){
+            $this['name']=$f->model['name'];
+            $this->save();
+            return [new \atk4\ui\jsReload($p->owner->owner)];
+        });
+    }
+
+    function superpass(){
+        if($this['username']=='admin') throw new \Exception("Error Processing Request", 1);
+        
+        $this['password'] = rand();
+        $this->save();
     }
 }
