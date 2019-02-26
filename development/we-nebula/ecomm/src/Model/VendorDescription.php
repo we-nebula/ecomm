@@ -4,12 +4,12 @@
 namespace nebula\we\Model;
 
 
-class ProductDetail extends \nebula\we\Model {
+class VendorDescription extends \nebula\we\Model {
 	
-	public $table='product_detail';
-	public $caption ="Product Detail";
+	public $table='vendor_description';
+	public $caption ="Vendor Description";
 
-    public $acl_type='Product_Detail';
+    public $acl_type='vendor_description';
 
     public $actions = [
         'Active'=>['view','edit','delete','deactivate'],
@@ -20,7 +20,7 @@ class ProductDetail extends \nebula\we\Model {
         parent::init();
 
         $this->hasOne('lang_id',new \nebula\we\Model\Language)->withTitle();
-        $this->hasOne('product_id',new \nebula\we\Model\Product)->withTitle(); 
+        $this->hasOne('vendor_id',new \nebula\we\Model\Vendor)->withTitle(); 
 
         $this->addFields([
         	['name'],

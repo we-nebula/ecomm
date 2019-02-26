@@ -4,12 +4,12 @@
 namespace nebula\we\Model;
 
 
-class ProductVariation extends \nebula\we\Model {
+class ProductVariationAttachmentMap extends \nebula\we\Model {
 	
-	public $table='product_variation';
-	public $caption ="Product variation";
+	public $table='product_variation_attachment_map';
+	public $caption ="Product Variation Attachment Map";
 
-    public $acl_type='Product';
+    public $acl_type='ProductDetail';
 
     public $actions = [
         'Active'=>['view','edit','delete','deactivate'],
@@ -19,11 +19,10 @@ class ProductVariation extends \nebula\we\Model {
 	public function init(){
         parent::init();
 
-        $this->hasOne('Product',new \nebula\we\Model\Product);
-        $this->hasMany('ProductAttachmentMap',new \nebula\we\Model\ProductAttachmentMap);
-
+        $this->hasOne('product_variation_id',new \nebula\we\Model\ProductVariation)->withTitle();
+        $this->hasOne('media_id',new \nebula\we\Model\Media)->withTitle();
+        
         $this->addFields([
-            ['name'],
             ['status','enum'=>array_keys($this->actions)],
         ]);
 

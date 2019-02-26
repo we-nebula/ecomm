@@ -21,6 +21,7 @@ class Media extends \nebula\we\Model {
 
         $this->hasMany('MediaDescription',new \nebula\we\Model\MediaDescription);
         $this->hasMany('ProductAttachmentMap',new \nebula\we\Model\ProductAttachmentMap);
+        $this->hasMany('ProductVariationAttachmentMap',new \nebula\we\Model\ProductVariationAttachmentMap);
 
         $this->addFields([
             ['name'],
