@@ -4,12 +4,12 @@
 namespace nebula\we\Model;
 
 
-class ProductVariation extends \nebula\we\Model {
+class StockMovementReason extends \nebula\we\Model {
 	
-	public $table='product_variation';
-	public $caption ="Product variation";
+	public $table='stock_movement_reason';
+	public $caption ="StockMovementReason";
 
-    public $acl_type='Product';
+    public $acl_type='StockMovementReason';
 
     public $actions = [
         'Active'=>['view','edit','delete','deactivate'],
@@ -19,12 +19,11 @@ class ProductVariation extends \nebula\we\Model {
 	public function init(){
         parent::init();
 
-        $this->hasOne('Product',new \nebula\we\Model\Product);
-        $this->hasMany('ProductAttachmentMap',new \nebula\we\Model\ProductAttachmentMap);
-        $this->hasMany('Stock',new \nebula\we\Model\Stock);
-        
+        $this->hasOne('lang_id',new \nebula\we\Model\Language);
+
         $this->addFields([
             ['name'],
+        	['reason'],
             ['status','enum'=>array_keys($this->actions)],
         ]);
 

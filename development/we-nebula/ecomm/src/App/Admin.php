@@ -46,6 +46,8 @@ class Admin extends \nebula\we\App {
 		$sm->addItem('Media',$this->app->url(['index','page'=>'nebula\we\Page\medias']));
 		$sm->addItem('Media Description',$this->app->url(['index','page'=>'nebula\we\Page\mediadescriptions']));
 
+		$menu->addItem('StockMovementReason',$this->app->url(['index','page'=>'nebula\we\Page\stockmovementreasons']));
+
 		$menu = $this->app->layout->menu->addMenu('Vendor');	
 		$menu->addItem('Vendor',$this->app->url(['index','page'=>'nebula\we\Page\vendors']));
 		$menu->addItem('VendorDescription',$this->app->url(['index','page'=>'nebula\we\Page\vendorsdescription']));
@@ -69,6 +71,8 @@ class Admin extends \nebula\we\App {
 		$sm->addItem('ProductVariationAttributeValueMap',$this->app->url(['index','page'=>'nebula\we\Page\productvariationattributevaluemaps']));
 		$sm->addItem('ProductVariationAttachmentValueMap',$this->app->url(['index','page'=>'nebula\we\Page\productvariationattachmentmaps']));
 
+		$menu = $this->app->layout->menu->addMenu('Inventory');	
+		$menu->addItem('Stock',$this->app->url(['index','page'=>'nebula\we\Page\stocks']));
 
 		// $menu = $this->app->layout->menu->addMenu('Commission System');
 		// $menu = $this->app->layout->menu->addMenu('Reporting');

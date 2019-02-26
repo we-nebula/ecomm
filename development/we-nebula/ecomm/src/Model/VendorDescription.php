@@ -21,6 +21,7 @@ class VendorDescription extends \nebula\we\Model {
 
         $this->hasOne('lang_id',new \nebula\we\Model\Language)->withTitle();
         $this->hasOne('vendor_id',new \nebula\we\Model\Vendor)->withTitle(); 
+        $this->hasOne('logo_id',new \nebula\we\Model\Media)->withTitle(); 
 
         $this->addFields([
         	['name'],

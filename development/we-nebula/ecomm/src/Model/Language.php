@@ -28,6 +28,7 @@ class Language extends \nebula\we\Model {
         $this->hasMany('attribute_value_id',new \nebula\we\Model\AttributeValueDescription);
         $this->hasMany('MediaDescription',new \nebula\we\Model\MediaDescription);
         $this->hasMany('VendorDescription',new \nebula\we\Model\VendorDescription);
+        $this->hasMany('StockMovementReason',new \nebula\we\Model\StockMovementReason);
 
         $this->addFields([
         	['name'],

@@ -24,6 +24,7 @@ class Product extends \nebula\we\Model {
         $this->hasMany('ProductAttributeMap',new \nebula\we\Model\ProductAttributeMap);
         $this->hasMany('ProductAttachmentMap',new \nebula\we\Model\ProductAttachmentMap);
         $this->hasMany('ProductVariation',new \nebula\we\Model\ProductVariation);
+        $this->hasMany('Stock',new \nebula\we\Model\Stock);
 
         $this->addFields([
             ['name'],

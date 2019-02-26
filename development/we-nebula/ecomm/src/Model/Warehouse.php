@@ -20,6 +20,7 @@ class Warehouse extends \nebula\we\Model {
         parent::init();
 
         $this->hasOne('Vendor',new \nebula\we\Model\Vendor);
+        $this->hasMany('Stock',new \nebula\we\Model\Stock);
         
         $this->addFields([
             ['name'],
