@@ -34,20 +34,26 @@ class Admin extends \nebula\we\App {
 		$menu->addItem('Employee',$this->app->url(['index','page'=>'nebula\we\Page\employees']));
 		$menu->addItem('Settings',$this->app->url(['index','page'=>'nebula\we\Page\settings']));
 
-		$menu->addItem('Attribute',$this->app->url(['index','page'=>'nebula\we\Page\attributes']));
-		$menu->addItem('AttributeDescription',$this->app->url(['index','page'=>'nebula\we\Page\attributesdescription']));
-		$menu->addItem('AttributeValue',$this->app->url(['index','page'=>'nebula\we\Page\attributesvalues']));
-		$menu->addItem('AttributeValueDescription',$this->app->url(['index','page'=>'nebula\we\Page\attributesvaluesdescription']));
+		$sm = $menu->addMenu('Attribute');
+		$sm->addItem('Attribute',$this->app->url(['index','page'=>'nebula\we\Page\attributes']));
+		$sm->addItem('AttributeDescription',$this->app->url(['index','page'=>'nebula\we\Page\attributesdescription']));
+
+		$sm = $menu->addMenu('Attribute Value');
+		$sm->addItem('AttributeValue',$this->app->url(['index','page'=>'nebula\we\Page\attributesvalues']));
+		$sm->addItem('AttributeValueDescription',$this->app->url(['index','page'=>'nebula\we\Page\attributesvaluesdescription']));
 
 		
-		$menu = $this->app->layout->menu->addMenu('Catalouge');
-		$menu->addItem('Category',$this->app->url(['index','page'=>'nebula\we\Page\categories']));
-		$menu->addItem('CategoryDetail',$this->app->url(['index','page'=>'nebula\we\Page\categoriesdetail']));
-		$menu->addItem('CategoryAttributeMaP',$this->app->url(['index','page'=>'nebula\we\Page\categoryattributemaps']));
+		$menu = $this->app->layout->menu->addMenu('Catalouge');	
 
-		$menu->addItem('Product',$this->app->url(['index','page'=>'nebula\we\Page\products']));
-		$menu->addItem('ProductDetail',$this->app->url(['index','page'=>'nebula\we\Page\productdetails']));
-		$menu->addItem('ProductAttributeMap',$this->app->url(['index','page'=>'nebula\we\Page\productattributemaps']));
+		$sm = $menu->addMenu('Category');
+		$sm->addItem('Category',$this->app->url(['index','page'=>'nebula\we\Page\categories']));
+		$sm->addItem('CategoryDetail',$this->app->url(['index','page'=>'nebula\we\Page\categoriesdetail']));
+		$sm->addItem('CategoryAttributeMaP',$this->app->url(['index','page'=>'nebula\we\Page\categoryattributemaps']));
+
+		$sm = $menu->addMenu('Product');
+		$sm->addItem('Product',$this->app->url(['index','page'=>'nebula\we\Page\products']));
+		$sm->addItem('ProductDetail',$this->app->url(['index','page'=>'nebula\we\Page\productdetails']));
+		$sm->addItem('ProductAttributeMap',$this->app->url(['index','page'=>'nebula\we\Page\productattributemaps']));
 
 
 		// $menu = $this->app->layout->menu->addMenu('Commission System');
