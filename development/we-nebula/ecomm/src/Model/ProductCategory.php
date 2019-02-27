@@ -19,8 +19,8 @@ class ProductCategory extends \nebula\we\Model {
 	public function init(){
         parent::init();
 
-        $this->hasOne('product_id',new \nebula\we\Model\Product);
-        $this->hasOne('category_id',new \nebula\we\Model\Category);
+        $this->hasOne('product_id',new \nebula\we\Model\Product)->withTitle();
+        $this->hasOne('category_id',new \nebula\we\Model\Category)->withTitle();
 
         $this->addFields([
             ['status','enum'=>array_keys($this->actions)],

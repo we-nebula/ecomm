@@ -19,16 +19,16 @@ class AttributeValue extends \nebula\we\Model {
 	public function init(){
         parent::init();
 
-        $this->hasMany('AttributeValueDescription',new \nebula\we\Model\AttributeValueDescription);
-        $this->hasMany('ProductAttributeMap',new \nebula\we\Model\ProductAttributeMap);
 
         $this->addFields([
             ['name'],
-        	['type'],
-        	['position'],
+            ['type'],
+            ['position'],
             ['status','enum'=>array_keys($this->actions)],
         ]);
 
+        $this->hasMany('AttributeValueDescription',new \nebula\we\Model\AttributeValueDescription);
+        $this->hasMany('ProductAttributeMap',new \nebula\we\Model\ProductAttributeMap);
         (new \nebula\we\Migration\MySQL($this))->migrate();
 
     }
