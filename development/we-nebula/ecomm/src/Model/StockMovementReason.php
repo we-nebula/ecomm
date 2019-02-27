@@ -19,7 +19,7 @@ class StockMovementReason extends \nebula\we\Model {
 	public function init(){
         parent::init();
 
-        $this->hasOne('lang_id',new \nebula\we\Model\Language);
+        $this->hasOne('lang_id',new \nebula\we\Model\Language)->withTitle();
 
         $this->addFields([
             ['name'],

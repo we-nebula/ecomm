@@ -19,14 +19,14 @@ class Vendor extends \nebula\we\Model {
 	public function init(){
         parent::init();
 
-        $this->hasMany('VendorDescription',new \nebula\we\Model\VendorDescription);
-        $this->hasMany('Warehouse',new \nebula\we\Model\Warehouse);
         
         $this->addFields([
             ['name'],
             ['status','enum'=>array_keys($this->actions)],
         ]);
 
+        $this->hasMany('VendorDescription',new \nebula\we\Model\VendorDescription);
+        $this->hasMany('Warehouse',new \nebula\we\Model\Warehouse);
         (new \nebula\we\Migration\MySQL($this))->migrate();
 
     }

@@ -62,7 +62,8 @@ class Admin extends \nebula\we\App {
 
 		$sm = $menu->addMenu('Product');
 		$sm->addItem('Product',$this->app->pageUrl('products'));
-		$sm->addItem('ProductDetail',$this->app->pageUrl('productdetails'));
+		$sm->addItem('ProductAttachmentMap',$this->app->pageUrl('productattachmentmaps'));
+		$sm->addItem('ProductCategory',$this->app->pageUrl('productcategories'));
 		$sm->addItem('ProductAttachmentMap',$this->app->pageUrl('productattachmentmaps'));
 
 		$sm = $sm->addMenu('Product Variation');

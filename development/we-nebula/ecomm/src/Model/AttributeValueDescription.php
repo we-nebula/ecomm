@@ -20,7 +20,7 @@ class AttributeValueDescription extends \nebula\we\Model {
         parent::init();
 
         $this->hasOne('lang_id',new \nebula\we\Model\Language)->withTitle();
-        $this->hasOne('attribute_value_id',new \nebula\we\Model\AttributeValue);
+        $this->hasOne('attribute_value_id',new \nebula\we\Model\AttributeValue)->withTitle();
 
         $this->addFields([
             ['name'],

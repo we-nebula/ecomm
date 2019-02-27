@@ -19,7 +19,7 @@ class CategoryDetail extends \nebula\we\Model {
 	public function init(){
         parent::init();
 
-        $this->hasOne('category_id',new \nebula\we\Model\Category);
+        $this->hasOne('category_id',new \nebula\we\Model\Category)->withTitle();
         $this->hasOne('lang_id',new \nebula\we\Model\Language)->withTitle();
         
         $this->addFields([

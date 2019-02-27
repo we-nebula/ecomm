@@ -19,8 +19,8 @@ class CategoryAttributeMap extends \nebula\we\Model {
 	public function init(){
         parent::init();
 
-        $this->hasOne('category_id',new \nebula\we\Model\Category);
-        $this->hasOne('attribute_id',new \nebula\we\Model\Attribute);
+        $this->hasOne('category_id',new \nebula\we\Model\Category)->withTitle();;
+        $this->hasOne('attribute_id',new \nebula\we\Model\Attribute)->withTitle();
         
         $this->addFields([
             ['status','enum'=>array_keys($this->actions)],
