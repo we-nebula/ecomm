@@ -17,7 +17,7 @@ class employees extends \nebula\we\Page {
 
 		$modal_vp1 = $this->add(['Modal', 'title' => 'Roles']);
 		$modal_vp1->set(function ($p){
-			$c = $p->add(['\atk4\acl\CRUD']);
+			$c = $p->add(['CRUD']);
 			$c->setModel(new \atk4\acl\Model\Role($this->app->db));
 		});
 
