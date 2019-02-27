@@ -31,8 +31,12 @@ class Category extends \nebula\we\Model {
 
         $this->hasMany('CategoryDetail',new \nebula\we\Model\CategoryDetail);
         $this->hasMany('ProductCategory',new \nebula\we\Model\ProductCategory);
-        $this->hasMany('attribute_id',new \nebula\we\Model\Attribute);
+        $this->hasMany('CategoryAttributeMap',new \nebula\we\Model\CategoryAttributeMap);
 
+        $this->addExpression('CategoryDetail_count',$this->refLink('CategoryDetail')->action('count'));
+        $this->addExpression('ProductCategory_count',$this->refLink('ProductCategory')->action('count'));
+        $this->addExpression('CategoryAttributeMap_count',$this->refLink('CategoryAttributeMap')->action('count'));
+        
         
         (new \nebula\we\Migration\MySQL($this))->migrate();
 
