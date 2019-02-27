@@ -12,9 +12,14 @@ class Employee extends \nebula\we\Model {
     public $acl_type='Employee';
 
     public $actions = [
-        'Active'=>['view','edit','delete','deactivate','superpass'],
+        'Active'=>['view','edit','delete','deactivate','superpass','not_implemented'],
         'InActive'=>['view','edit','delete','activate'],
+        'Draft'=>['view','edit','delete','submit'],
     ];
+
+    // public $actions = [
+    //     ['view','edit','delete','deactivate','superpass']
+    // ];
 
 	public function init(){
         parent::init();
@@ -72,6 +77,11 @@ class Employee extends \nebula\we\Model {
         if($this['username']=='admin') throw new \Exception("Error Processing Request", 1);
         
         $this['password'] = rand();
+        $this->save();
+    }
+
+    function submit(){
+        $this['status']='Active';
         $this->save();
     }
 }
