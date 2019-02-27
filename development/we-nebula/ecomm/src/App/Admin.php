@@ -25,14 +25,14 @@ class Admin extends \nebula\we\App {
 
 		$this->createMenus();
 		//$this->sidecreateMenus();
-		$this->router();
+		$this->router('page',['nebula\we\page']);
 
 	}
 
 	function createMenus(){
 		$menu = $this->app->layout->menu->addMenu('System');
-		$menu->addItem('Employee',$this->app->url(['index','page'=>'nebula\we\page\employees']));
-		$menu->addItem('Settings',$this->app->url(['index','page'=>'nebula\we\page\settings']));
+		$menu->addItem('Employee',$this->app->pageUrl('employees'));
+		$menu->addItem('Settings',$this->app->pageUrl('settings'));
 
 		$sm = $menu->addMenu('Attribute');
 		$sm->addItem('Attribute',$this->app->url(['index','page'=>'nebula\we\page\attributes']));

@@ -16,10 +16,21 @@ namespace nebula\we\Traits;
  */
 
 Trait PageRouter{
+	public $page_locations = [];
 
-	function router($page_var='page'){
+	function router($page_var='page', $page_locations=[]){
+		$this->page_locations = $page_locations;
+
         if($page = $this->app->stickyGet($page_var)){
-			$this->app->add(new $page);			
+        	$page = str_replace('-', '\\', $page);
+        	foreach ($this->page_locations as $loc) {
+        		$page_path = '\\'.$loc.'\\'.$page;
+				$this->app->add(new $page_path);
+        	}
 		}
+    }
+
+    function pageUrl($page_class){
+    	return $this->app->url(['index','page'=>str_replace("\\", '-', $page_class)]);
     }
 }

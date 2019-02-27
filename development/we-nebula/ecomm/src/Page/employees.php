@@ -5,6 +5,9 @@ namespace nebula\we\Page;
 use nebula\we\Model\Employee;
 
 class employees extends \nebula\we\Page {
+
+	public $title = "Manage Employees";
+
 	function init(){
 		parent::init();
 
