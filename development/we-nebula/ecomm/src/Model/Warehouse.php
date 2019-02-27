@@ -27,6 +27,9 @@ class Warehouse extends \nebula\we\Model {
         ]);
 
         $this->hasMany('Stock',new \nebula\we\Model\Stock);
+        $this->hasMany('ProductWarehouseMap',new \nebula\we\Model\ProductWarehouseMap);
+        $this->hasMany('ProductVariationWarehouseMap',new \nebula\we\Model\ProductVariationWarehouseMap);
+        
         (new \nebula\we\Migration\MySQL($this))->migrate();
 
     }

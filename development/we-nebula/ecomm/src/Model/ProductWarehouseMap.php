@@ -4,10 +4,10 @@
 namespace nebula\we\Model;
 
 
-class ProductVariation extends \nebula\we\Model {
+class ProductWarehouseMap extends \nebula\we\Model {
 	
-	public $table='product_variation';
-	public $caption ="Product variation";
+	public $table='product_warehouse_map';
+	public $caption ="ProductWarehouseMap";
 
     public $acl_type='Product';
 
@@ -20,15 +20,11 @@ class ProductVariation extends \nebula\we\Model {
         parent::init();
 
         $this->hasOne('product_id',new \nebula\we\Model\Product)->withTitle();
-        
+        $this->hasOne('warehouse_id',new \nebula\we\Model\Warehouse)->withTitle();
+
         $this->addFields([
-            ['name'],
             ['status','enum'=>array_keys($this->actions)],
         ]);
-
-        $this->hasMany('ProductAttachmentMap',new \nebula\we\Model\ProductAttachmentMap);
-        $this->hasMany('Stock',new \nebula\we\Model\Stock);
-        $this->hasMany('ProductVariationWarehouseMap',new \nebula\we\Model\ProductVariationWarehouseMap);
         
         (new \nebula\we\Migration\MySQL($this))->migrate();
 

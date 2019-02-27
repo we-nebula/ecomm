@@ -16,6 +16,8 @@ class Stock extends \nebula\we\Model {
         'InActive'=>['view','edit','delete','activate'],
     ];
 
+    public $title_field='id';
+
 	public function init(){
         parent::init();
 
@@ -31,6 +33,8 @@ class Stock extends \nebula\we\Model {
         	['low_stocl_alert'],
             ['status','enum'=>array_keys($this->actions)],
         ]);
+
+        $this->hasMany('StockMovement',new \nebula\we\Model\StockMovement);
 
         (new \nebula\we\Migration\MySQL($this))->migrate();
 

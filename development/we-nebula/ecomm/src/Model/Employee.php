@@ -40,6 +40,8 @@ class Employee extends \nebula\we\Model {
 
         $this->addField('image',new \atk4\filestore\Field\File($this->app->filesystem));
 
+        $this->hasMany('StockMovementEmployee',new \nebula\we\Model\StockMovementEmployee);
+
         (new \atk4\schema\Migration\MySQL($this))->migrate();
 
     }

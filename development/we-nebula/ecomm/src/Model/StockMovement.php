@@ -16,18 +16,21 @@ class StockMovement extends \nebula\we\Model {
         'InActive'=>['view','edit','delete','activate'],
     ];
 
+    public $title_field = 'id';
+
 	public function init(){
         parent::init();
 
-        $this->hasOne('product_id',new \nebula\we\Model\Stock)->withTitle();
-        $this->hasOne('warehouse_id',new \nebula\we\Model\Warehouse)->withTitle();
-        $this->hasOne('product_variation_id',new \nebula\we\Model\ProductVariation)->withTitle();
+        $this->hasOne('stock_id',new \nebula\we\Model\Stock)->withTitle();
+        $this->hasOne('stock_movement_reason_id',new \nebula\we\Model\StockMovementReason)->withTitle();
 
         $this->addFields([
             ['physical_quantity_moved'],
         	['sign'],
             ['status','enum'=>array_keys($this->actions)],
         ]);
+
+        $this->hasMany('StockMovementVendor',new \nebula\we\Model\StockMovementVendor);
 
         (new \nebula\we\Migration\MySQL($this))->migrate();
 

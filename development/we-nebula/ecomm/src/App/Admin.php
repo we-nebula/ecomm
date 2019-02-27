@@ -65,15 +65,20 @@ class Admin extends \nebula\we\App {
 		$sm->addItem('ProductAttachmentMap',$this->app->pageUrl('productattachmentmaps'));
 		$sm->addItem('ProductCategory',$this->app->pageUrl('productcategories'));
 		$sm->addItem('ProductAttachmentMap',$this->app->pageUrl('productattachmentmaps'));
+		$sm->addItem('ProductWarehouseMap',$this->app->pageUrl('productswarehousemap'));
 
 		$sm = $sm->addMenu('Product Variation');
 		$sm->addItem('ProductVariation',$this->app->pageUrl('productsvariation'));
 		$sm->addItem('ProductAttributeMap',$this->app->pageUrl('productattributemaps'));
 		$sm->addItem('ProductVariationAttributeValueMap',$this->app->pageUrl('productvariationattributevaluemaps'));
 		$sm->addItem('ProductVariationAttachmentValueMap',$this->app->pageUrl('productvariationattachmentmaps'));
+		$sm->addItem('ProductVariationWarehouseMap',$this->app->pageUrl('productsvariationwarehousemap'));
 
 		$menu = $this->app->layout->menu->addMenu('Inventory');	
 		$menu->addItem('Stock',$this->app->pageUrl('stocks'));
+		$menu->addItem('StockMovement',$this->app->pageUrl('stocksmovement'));
+		$menu->addItem('StockMovementVendor',$this->app->pageUrl('stocksmovementvendor'));
+		$menu->addItem('StockMovementEmployee',$this->app->pageUrl('stocksmovementemployee'));
 
 		// $menu = $this->app->layout->menu->addMenu('Commission System');
 		// $menu = $this->app->layout->menu->addMenu('Reporting');

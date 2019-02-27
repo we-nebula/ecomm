@@ -27,6 +27,8 @@ class Vendor extends \nebula\we\Model {
 
         $this->hasMany('VendorDescription',new \nebula\we\Model\VendorDescription);
         $this->hasMany('Warehouse',new \nebula\we\Model\Warehouse);
+        $this->hasMany('StockMovementVendor',new \nebula\we\Model\StockMovementVendor);
+
         (new \nebula\we\Migration\MySQL($this))->migrate();
 
     }
